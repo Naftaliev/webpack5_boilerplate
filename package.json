@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "dev": "webpack server"
+    "start": "set NODE_ENV=development&&webpack serve --open",
+    "dev": "set NODE_ENV=development&&webpack",
+    "build": "set NODE_ENV=production&&webpack"
   },
   "keywords": [],
   "author": "",
@@ -20,5 +20,11 @@
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "pug": "^2.0.4",
+    "pug-loader": "^2.4.0",
+    "sass": "^1.49.0",
+    "sass-loader": "^12.4.0"
   }
 }

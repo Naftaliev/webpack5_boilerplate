@@ -1,23 +1,27 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+let mode = 'development'
+if (process.env.NODE_ENV === 'production') {
+    mode = 'production'
+}
+console.log(mode + ' mode')
+
 module.exports = {
-  mode: 'development', //production
+  mode: mode, 
   entry: {
-    main: path.resolve(__dirname, 'src/app.js'),
+    main: path.resolve(__dirname, 'src/main.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    assetModuleFilename: '[name][ext]',
+    assetModuleFilename: "assets/[hash][ext][query]",
     clean: true,
   },
   devtool: 'inline-source-map',
   devServer: {
-    static: path.resolve(__dirname, 'dist'),
-    port: 5001, //default 8080
-    open: true,
-    hot: true,
+    compress: true,
+    port: 9000,
   },
   //loaders
   module: {
@@ -37,14 +41,20 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader',
+        exclude: /(node_modules|bower_components)/,
+    },
     ],
   },
   //plugins
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Fresh start',
-      filename: 'index.html',
-      template: path.resolve(__dirname, 'src/temp.html'),
+      template: "./src/index.pug",
+      // title: 'Fresh start',
+      // filename: 'index.html',
+      // template: path.resolve(__dirname, 'src/temp.html'),
     }),
   ],
 };
