@@ -1,4 +1,4 @@
-
+include /pug/libs/_libs
 
 doctype html
 html(lang='en')
@@ -7,5 +7,5 @@ html(lang='en')
         .container
             h1 Hello from Webpack
             h2.container__subtitle Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, ipsam!
-                img(src='src/logo.svg')
-                img(src=require("Img/webpack.png"))
+                +image-svg('logo')
+                +image('webpack')
