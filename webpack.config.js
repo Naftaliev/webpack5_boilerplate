@@ -10,12 +10,12 @@ console.log(mode + ' mode')
 module.exports = {
   mode: mode, 
   entry: {
-    main: path.resolve(__dirname, 'src/main.js'),
+    main: path.resolve(__dirname, 'src/index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    assetModuleFilename: "assets/[hash][ext][query]",
+    assetModuleFilename: "assets/[hash][ext]",
     clean: true,
   },
   devtool: 'inline-source-map',
@@ -23,11 +23,27 @@ module.exports = {
     compress: true,
     port: 9000,
   },
+  resolve: {
+    alias: {
+      Src: path.resolve(__dirname, 'src/'),
+      Img: path.resolve(__dirname, 'src/img'),
+    },
+  },
   //loaders
   module: {
     rules: [
+      //html
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+        },
       //css
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      //sass/scss
+      {
+        test: /\.(sa|sc)ss$/,
+        loader: "sass-loader",
+      },
       //images
       { test: /\.(svg|ico|png|webp|jpg|gif|jpeg)$/, type: 'asset/resource' },
       //js for babel
@@ -44,17 +60,18 @@ module.exports = {
       {
         test: /\.pug$/,
         loader: 'pug-loader',
+        // loader: 'pug-html-loader',
+        // options: {
+        //   exports: false
+        // },
         exclude: /(node_modules|bower_components)/,
-    },
+      },
     ],
   },
   //plugins
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.pug",
-      // title: 'Fresh start',
-      // filename: 'index.html',
-      // template: path.resolve(__dirname, 'src/temp.html'),
+      template: "src/index.pug",
     }),
   ],
 };
