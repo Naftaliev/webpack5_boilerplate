@@ -25,7 +25,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      Src: path.resolve(__dirname, 'src/'),
+      _src: path.resolve(__dirname, 'src/'),
       Img: path.resolve(__dirname, 'src/img'),
     },
   },
@@ -37,13 +37,29 @@ module.exports = {
         test: /\.html$/i,
         loader: "html-loader",
         },
-      //css
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
-      //sass/scss
       {
-        test: /\.(sa|sc)ss$/,
-        loader: "sass-loader",
-      },
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+            (mode === 'development') ? "style-loader" : MiniCssExtractPlugin.loader,
+            "css-loader",
+            {
+                loader: "postcss-loader",
+                options: {
+                    postcssOptions: {
+                        plugins: [
+                            [
+                                "postcss-preset-env",
+                                {
+                                    // Options
+                                },
+                            ],
+                        ],
+                    },
+                },
+            },
+            "sass-loader",
+        ],
+    },
       //images
       { test: /\.(svg|ico|png|webp|jpg|gif|jpeg)$/, type: 'asset/resource' },
       //js for babel
@@ -73,5 +89,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.pug",
     }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css'
+  }),
   ],
 };
